@@ -1,0 +1,160 @@
+﻿<Page
+    x:Class="MediaImport.Views.OneDrivePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MediaImport.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:selector="using:MediaImport.Models"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Width="800" Height="500">
+    <Page.Resources>
+        <selector:OneDriveDataTemplateSelector
+            x:Key="FolderDataTemplateSelector"
+            FolderTemplate="{StaticResource FolderTemplate}"
+            x:DefaultBindMode="TwoWay"
+            />
+        <DataTemplate x:Key="FolderTemplate">
+            <Grid HorizontalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="48"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="70"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Row="0" Grid.Column="0" 
+                        Margin="0" Width="36" Height="36"                         
+                        FontFamily="Segoe MDL2 Assets"
+                        FontSize="36"
+                        Text="&#xE188;"
+                        Foreground="#6D071A" 
+                        HorizontalAlignment="Left" />
+                <TextBlock Text="{Binding Name, Mode=TwoWay}"  
+                           Width="auto" Height="auto"  
+                           Grid.Column="1" 
+                           Margin="10,0,0,0" 
+                           HorizontalAlignment="Left" 
+                           VerticalAlignment="Center" />
+                <AppBarButton  Grid.Column="2"
+                          Icon="More"
+                          x:Name="cmdMenu"                            
+                          Width="auto" 
+                          Height="auto"
+                          HorizontalAlignment="Right" 
+                          VerticalAlignment="Center" 
+                          Margin="0,0,0,0" FocusVisualPrimaryBrush="#FF6B6767">
+                    <Button.Content>
+                        <FontIcon x:Name="DropDownGlyph"                                   
+                                  Glyph="&#xE10C;" 
+                                  HorizontalAlignment="Left" 
+                                  IsHitTestVisible="True" 
+                                  Margin="0" 
+                                  FontWeight="Bold"
+                                  VerticalAlignment="Top" 
+                                  FontSize="12"/>
+                    </Button.Content>
+                    <Button.Flyout>
+                        <Flyout>
+                            <StackPanel>
+                                <!--RENAME-->
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="100"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0"
+                                               Text="Rename"
+                                               VerticalAlignment="Center"/>
+                                    <AppBarButton Grid.Column="1"                                           
+                                         Icon="Rename"
+                                         Tag="Rename"
+                                         x:Name="RenameButton"
+                                         Content="Rename"                                        
+                                         VerticalAlignment="Bottom" 
+                                         Width="48" Height="48"
+                                         Click="RenameButton_Click">
+                                    </AppBarButton>
+                                </Grid>
+                                <!--DELETE-->
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="48"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0"
+                                                   Text="Delete"
+                                                   VerticalAlignment="Center"/>
+                                    <AppBarButton Grid.Column="1"                                           
+                                         Icon="Delete"
+                                         Content="Delete" 
+                                         x:Name="DeleteButton"
+                                         VerticalAlignment="Bottom" 
+                                         Width="48" 
+                                         Height="48"
+                                         Click="DeleteButton_Click">
+                                    </AppBarButton>
+                                </Grid>
+                            </StackPanel>
+                        </Flyout>
+                    </Button.Flyout>
+                </AppBarButton>
+            </Grid>
+        </DataTemplate>
+    </Page.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="52"/>
+            <RowDefinition/>
+            <RowDefinition Height="60"/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center" 
+                   FontFamily="Arial" 
+                   FontSize="24"
+                   Text="SELECT FOLDER" Height="Auto" Margin="0,0,0,0" Width="197"/>
+        <Button Name="bCancel" Click="BCancel_Click" Content="Cancel" HorizontalAlignment="Right" Height="40" Margin="0,0,20,0" VerticalAlignment="Center" Width="88" Foreground="Black" Background="#339B0D0D" FontWeight="Medium" FontStyle="Normal" FontStretch="Normal"/>
+        <Button Name="bLogOut" Click="BLogOut_Click"  Content="Log Out" HorizontalAlignment="Left" Height="40" Margin="20,0,0,0" VerticalAlignment="Center" Width="88" Foreground="Black" Background="#339B0D0D" FontWeight="Medium" FontStyle="Normal" FontStretch="Normal"/>
+        <StackPanel Orientation="Horizontal" Grid.Row="1" 
+                    HorizontalAlignment="Right" 
+                    VerticalAlignment="Center" Height="52">
+            <Button x:Name="GoBack"
+                    FontFamily="Segoe MDL2 Assets" 
+                    Content="&#xE7EA;"
+                    Margin="0,0,0,0"
+                    Click="GoBack_Click" HorizontalAlignment="Left" Height="32" VerticalAlignment="Center" Width="38"/>
+            <Button x:Name="NewFolderButton"
+                    Content="New Folder" 
+                    Click="NewFolderButton_Click"
+                    HorizontalAlignment="Right"
+                    Margin="10"/>
+        </StackPanel>
+        <TextBlock x:Name="CurrentFolderName"
+            HorizontalAlignment="Left"
+            Grid.Row="1"
+            FontFamily="Arial" 
+            Margin="10,0,0,0"
+            FontSize="16"
+            TextWrapping="Wrap" 
+            VerticalAlignment="Center"
+            Foreground="#FF988A8A" Height="18" Width="0"/>
+        <ListView x:Name="OneDriveFoldersListView"
+            Grid.Row="2" 
+            SelectionMode="Single"
+            ItemTemplateSelector="{StaticResource FolderDataTemplateSelector}"
+            IsDoubleTapEnabled="True"    
+            DoubleTapped="OneDriveFoldersListView_DoubleTapped"
+            IsItemClickEnabled="True"
+            >
+        </ListView>
+        <Button x:Name="SelectSaveFolder"
+            Grid.Row="3" 
+                Content="Select"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center"
+                Click="SelectSaveFolder_Click"
+                Height="32"       
+                Width="94" />
+
+    </Grid>
+</Page>

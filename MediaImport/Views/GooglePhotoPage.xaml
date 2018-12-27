@@ -1,0 +1,26 @@
+﻿<Page
+    x:Class="MediaImport.Views.GooglePhotoPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MediaImport.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="200"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid  Grid.Row="0">
+            <Button Name="LogOutButton" Height="80" Width="200" Margin="50" Content="Log Out" Foreground="White" Background="#FFFBCACA" Click="LogOutButton_Click" FontFamily="Arial" FontSize="24"/>
+            <Button Name="CancelButton" Height="80" Width="200" Margin="50" Content="Cancel" HorizontalAlignment="Right" Foreground="White" Background="#FFFBCACA" Click="CancelButton_Click" FontFamily="Arial" FontSize="24"/>
+        </Grid>
+        <Grid Grid.Row="1">
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Button x:Name="LibraryUploadButton" Content="Upload to library" Height="80" Width="700" Margin="50,50" Click="LibraryUploadButton_Click" FontFamily="Arial" FontSize="36" Background="#FFFBCACA" Foreground="White"/>
+                <Button x:Name="AlbumUploadButton" Content="Create an album and upload" Height="80" Width="700" Margin="50,50" Click="AlbumUploadButton_Click" FontFamily="Arial" FontSize="36" Background="#FFFBCACA" Foreground="White"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Page>
