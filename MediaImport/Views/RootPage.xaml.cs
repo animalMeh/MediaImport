@@ -46,6 +46,8 @@ namespace MediaImport.Views
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
+            GC.WaitForPendingFinalizers();
+            GC.Collect(0);
             DriveFolders.ItemsSource = (IconsListView.SelectedItem as PortableDrive).Folders;
             FolderFiles.ItemsSource = (IconsListView.SelectedItem as PortableDrive).Files;
         }
@@ -76,6 +78,8 @@ namespace MediaImport.Views
 
         public async void DriveFolders_ItemClick(object sender, ItemClickEventArgs e)
         {
+            GC.WaitForPendingFinalizers();
+            GC.Collect();
             BackButton.Visibility = Visibility.Visible;
             IReadOnlyList<StorageFolder> Folders = await (e.ClickedItem as StorageFolder).GetFoldersAsync();
             DriveFolders.ItemsSource = Folders;
