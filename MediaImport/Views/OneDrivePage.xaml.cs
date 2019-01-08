@@ -71,8 +71,7 @@ namespace MediaImport.Views
 
         private async void NavigateToFolderAsync(OneDriveStorageItem item)
         {
-            GC.WaitForPendingFinalizers();
-            GC.Collect(0);
+           
             if (item.IsFolder())
             {
                 try
@@ -96,8 +95,7 @@ namespace MediaImport.Views
 
         private async void NavigateBackAsync()
         {
-            GC.WaitForPendingFinalizers();
-            GC.Collect(0);
+          
             if (currentFolder != null)
             {
                 OneDriveStorageFolder _currentFolder = null;

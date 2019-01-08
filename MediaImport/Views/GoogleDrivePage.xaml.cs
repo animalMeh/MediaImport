@@ -71,8 +71,7 @@ namespace MediaImport.Views
 
         private async void NavigateBackAsync()
         {
-            GC.WaitForPendingFinalizers();
-            GC.Collect(0);
+          
             if (currentFolder != null)
             {
                 GoogleDriveStorageFolder _currentFolder = null;
@@ -105,8 +104,7 @@ namespace MediaImport.Views
 
         private async void NavigateToFolderAsync(GoogleDriveStorageFolder item)
         {
-            GC.WaitForPendingFinalizers();
-            GC.Collect(0);
+           
             try
                 {
                     var _currentFolder = await GoogleDriveStorageFolder.GetFolderAsync(item.Id);

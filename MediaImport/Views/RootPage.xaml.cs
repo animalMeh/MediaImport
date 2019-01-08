@@ -14,6 +14,8 @@ using Windows.Devices.Enumeration;
 using Microsoft.Toolkit.Services.OneDrive;
 using Microsoft.Toolkit.Services.Services.MicrosoftGraph;
 using Windows.UI.Popups;
+using Windows.UI.Xaml.Navigation;
+using Windows.ApplicationModel.DataTransfer;
 
 namespace MediaImport.Views
 {
@@ -37,6 +39,12 @@ namespace MediaImport.Views
             UsbWatcher.Removed += Extraction;
             ShowControllers();
             UsbWatcher.Start();
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            App.AppTile.ChangeTileContent("Import", "Can share your files to 3 different clouds");
+            base.OnNavigatedTo(e);
         }
 
         private void HumbButton_Click(object sender, RoutedEventArgs e)
@@ -95,7 +103,6 @@ namespace MediaImport.Views
             var localPath = ((BitmapImage)img.Source).UriSource.LocalPath;
             try
             {
-
                 img.Source = await GetIconOfFile(localPath);
             }
             catch (Exception ex)
@@ -186,6 +193,7 @@ namespace MediaImport.Views
    
         private async void ImportOneDrive_Click(object sender, RoutedEventArgs e)
         {
+            App.AppTile.ChangeTileContent("Import!!!", "Importing to OneDrive");
             if (CanImport())
             {
                 try
@@ -212,6 +220,8 @@ namespace MediaImport.Views
 
         private async void ImportGoogleDrive_Click(object sender, RoutedEventArgs e)
         {
+            App.AppTile.ChangeTileContent("Import!!!", "Importing to Google Drive");
+
             if (CanImport())
             {
                 try
@@ -236,6 +246,7 @@ namespace MediaImport.Views
 
         private async void ImportGooglePhoto_Click(object sender, RoutedEventArgs e)
         {
+            App.AppTile.ChangeTileContent("Import!!!", "Importing to Google Photo");
 
             if (CanImport())
             {
@@ -266,6 +277,24 @@ namespace MediaImport.Views
                 App.InformMessage = new MessageDialog("Select at least 1 file to upload");
                 await App.InformMessage.ShowAsync();
             }
+        }
+
+        private void Share_Click(object sender, RoutedEventArgs e)
+        {
+            if (CanImport())
+            {
+                DataTransferManager dataTransferManager = DataTransferManager.GetForCurrentView();
+                dataTransferManager.DataRequested += DataTransferManager_DataRequested;
+                
+            }
+        }
+
+        private void DataTransferManager_DataRequested(DataTransferManager sender, DataRequestedEventArgs args)
+        {
+            DataRequest request = args.Request;
+            var files = FolderFiles.SelectedItems as StorageFile[];
+            request.Data.SetStorageItems(files);
+            DataTransferManager.ShowShareUI();
         }
     }
 }
