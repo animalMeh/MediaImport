@@ -37,10 +37,17 @@ namespace MediaImport.Views
           //  App.RecieveData += ReceiveData;
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected override  async void OnNavigatedTo(NavigationEventArgs e)
         {
+            List<StorageFile> ImportedFiles = new List<StorageFile>();
             IReadOnlyList<IStorageItem> files = (IReadOnlyList<IStorageItem>)e.Parameter;
-            FilesToImport = GetStorageFiles(files);
+            StorageFolder localFolder = ApplicationData.Current.LocalFolder;
+            foreach (var f in files)
+            {
+                StorageFile newFile = await (f as StorageFile).CopyAsync(localFolder);
+                ImportedFiles.Add(newFile);
+            }
+            FilesToImport = ImportedFiles.ToArray();
             base.OnNavigatedTo(e);
         }
 
