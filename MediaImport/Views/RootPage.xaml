@@ -19,15 +19,15 @@
     </Page.Resources>
     <Grid Name="MainGrid">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="166*"/>
-            <ColumnDefinition Width="1108*"/>
-            <ColumnDefinition Width="7*"/>
+            <ColumnDefinition Width="173*"/>
+            <ColumnDefinition Width="1319*"/>
+            <ColumnDefinition Width="8*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Grid Height="48" Grid.ColumnSpan="3" Margin="0,0,-0.003,0">
+        <Grid Grid.ColumnSpan="3" Margin="0,0,-0.003,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition Width="200"/>
@@ -64,7 +64,7 @@
                   DisplayMode="CompactOverlay"   
                    OpenPaneLength="200"
                    CompactPaneLength="56"
-                   HorizontalAlignment="Left" Margin="0,0,0,0" Grid.ColumnSpan="2" 
+                   HorizontalAlignment="Left" Margin="0,0,0,0" Grid.ColumnSpan="2" VerticalAlignment="Stretch" Width="200" 
                    >
             <SplitView.Pane>
                 <ListView x:Name="IconsListView"
@@ -134,7 +134,7 @@
                 </ScrollViewer>
             </SplitView.Content>
         </SplitView>
-        <TextBlock Name="EmptyNovel" HorizontalAlignment="Center"  Grid.Row="1" Text=" Welcome! Choose drive!" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Column="1"/>
-        <Button  Name="Share" Margin="10" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="80" Height="30" Content="Share" Click="Share_Click"></Button>
+        <TextBlock Name="EmptyNovel" HorizontalAlignment="Center"  Grid.Row="1" Text=" Welcome! Choose or Insert drive!" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Column="1" Height="20" Margin="0,0,0,0" Width="224"/>
+        <Button  Name="Share" Margin="0,0,9.997,10" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="80" Height="30" Content="Share" Click="Share_Click"></Button>
     </Grid>
 </Page>
