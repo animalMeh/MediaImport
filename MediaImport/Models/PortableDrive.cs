@@ -26,7 +26,7 @@ namespace MediaImport.Models
             set
             {
                 name = value;
-                OnPropertyChanged("Name");
+                OnPropertyChanged();
             }
         }
 
@@ -39,7 +39,7 @@ namespace MediaImport.Models
             set
             {
                 files = value;
-                OnPropertyChanged("Files");
+                OnPropertyChanged();
             }
         }
 
@@ -52,7 +52,7 @@ namespace MediaImport.Models
             set
             {
                 folders = value;
-                OnPropertyChanged("Folders");
+                OnPropertyChanged();
             }
         }
 
@@ -64,10 +64,5 @@ namespace MediaImport.Models
 
         }
 
-        public IAsyncOperation<LoadMoreItemsResult> LoadMoreItemsAsync(uint count)
-        {
-            throw new NotImplementedException();
-        }
-        
     }
 }

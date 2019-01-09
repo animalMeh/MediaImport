@@ -68,7 +68,6 @@ namespace MediaImport.Models.Google
            string contentString = "{\"mimeType\":\"application/vnd.google-apps.folder\",\"parents\":[{\"id\":\"" + Id + "\"}],\"title\":\"" + title + "\"}";
            Message.Content = new StringContent(contentString, Encoding.UTF8, "application/json");
             var response = await GoogleDriveService.Instance.GoogleDriveClient.SendAsync(Message);
-
         }
 
         public async void Rename(string newName)
@@ -151,11 +150,9 @@ namespace MediaImport.Models.Google
                 var objPar = p.GetObject();             
                 parentid = objPar.GetNamedString("id");
             }
-
             return new GoogleDriveStorageFolder(FolderInfo.GetNamedString("id"), FolderInfo.GetNamedString("title"),
              FolderInfo.GetNamedValue("createdDate").GetString(), FolderInfo.GetNamedValue("modifiedDate").GetString(),parentid);
 
-           // return null;
         }
         
         private static async Task<byte[]> GetBytesAsync(StorageFile file)
@@ -173,6 +170,5 @@ namespace MediaImport.Models.Google
             }
             return fileBytes;
         }
-
     }
 }

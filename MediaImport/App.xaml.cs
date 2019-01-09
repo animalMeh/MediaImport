@@ -8,10 +8,11 @@ using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
 using Windows.UI.Xaml.Navigation;
 using Windows.UI.Notifications;
+using Windows.ApplicationModel.DataTransfer.ShareTarget;
+using Windows.ApplicationModel.DataTransfer;
 
 namespace MediaImport
 {
-   
     sealed partial class App : Application
     {
         public static MessageDialog InformMessage;
@@ -23,7 +24,16 @@ namespace MediaImport
             this.InitializeComponent();
             this.Suspending += OnSuspending;
             AppCenter.Start("feedb1b8-2df9-4c08-81f5-ac754ddf6fa9", typeof(Analytics));
-          
+        }
+
+        protected override async void OnShareTargetActivated(ShareTargetActivatedEventArgs args)
+        {
+            ShareOperation shareOperation = args.ShareOperation;
+            if (shareOperation.Data.Contains(StandardDataFormats.StorageItems))
+            {
+                var files = await shareOperation.Data.GetStorageItemsAsync();
+                //(Window.Current.Content as Frame).Navigate(typeof(Views.RootPage), files);
+            }
         }
 
         protected override void OnLaunched(LaunchActivatedEventArgs e)
@@ -52,7 +62,6 @@ namespace MediaImport
             {
                 if (rootFrame.Content == null)
                 {
-               
                     rootFrame.Navigate(typeof(Views.MainPage), e.Arguments);
                 }
           

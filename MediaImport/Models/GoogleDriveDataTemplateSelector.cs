@@ -9,8 +9,8 @@ namespace MediaImport.Models
 
         protected override DataTemplate SelectTemplateCore(object item, DependencyObject container)
         {
-            if(item is Google.GoogleDriveStorageFolder)
-                return FolderTemplate;
+            //if(item is Google.GoogleDriveStorageFolder)
+            //    return FolderTemplate;
             return FolderTemplate;
         }
     }

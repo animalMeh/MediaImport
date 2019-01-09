@@ -23,9 +23,7 @@ namespace MediaImport.Models.Google
 
         static Uri startAuthUri;
         static Uri endAuthUri;
-
-        public List<GooglePhotoAlbum> Albums { get;private set; }
-
+        
         private GooglePhotoService(string clientId , string clientSecret)
         {
             this.clientId = clientId;
@@ -58,7 +56,7 @@ namespace MediaImport.Models.Google
             try
             {
                 await Instance.LogIn(startAuthUri, endAuthUri);
-                await Instance.GetAlbums();
+             //   await Instance.GetAlbums();
                 IsAuthorized = true;
             }
             catch (Exception e)
@@ -113,20 +111,20 @@ namespace MediaImport.Models.Google
         }
 
         //Get albums
-        private async Task<List<GooglePhotoAlbum>> GetAlbums()
-        {
-            List<GooglePhotoAlbum> albums = new List<GooglePhotoAlbum>();
-            var mResponseAlbums = await GoogleClient.GetAsync("https://photoslibrary.googleapis.com/v1/albums");
-            string responseString = await mResponseAlbums.Content.ReadAsStringAsync();
-            JsonArray jsonAlbums = JsonObject.Parse(responseString).GetNamedArray("albums");
-            foreach(var jAlb in jsonAlbums)
-            {
-                JsonObject alb = jAlb.GetObject();
-                albums.Add(new GooglePhotoAlbum(alb.GetNamedString("id"), alb.GetNamedString("title")));
-            }
-            Albums = albums;
-            return albums;
-        }
+        //private async Task<List<GooglePhotoAlbum>> GetAlbums()
+        //{
+        //    List<GooglePhotoAlbum> albums = new List<GooglePhotoAlbum>();
+        //    var mResponseAlbums = await GoogleClient.GetAsync("https://photoslibrary.googleapis.com/v1/albums");
+        //    string responseString = await mResponseAlbums.Content.ReadAsStringAsync();
+        //    JsonArray jsonAlbums = JsonObject.Parse(responseString).GetNamedArray("albums");
+        //    foreach(var jAlb in jsonAlbums)
+        //    {
+        //        JsonObject alb = jAlb.GetObject();
+        //        albums.Add(new GooglePhotoAlbum(alb.GetNamedString("id"), alb.GetNamedString("title")));
+        //    }
+        //    Albums = albums;
+        //    return albums;
+        //}
 
         private async Task<string> GetResumableUploadTokenAsync(StorageFile file)
         {

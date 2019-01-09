@@ -16,6 +16,9 @@ using Microsoft.Toolkit.Services.Services.MicrosoftGraph;
 using Windows.UI.Popups;
 using Windows.UI.Xaml.Navigation;
 using Windows.ApplicationModel.DataTransfer;
+using Windows.Foundation;
+using Windows.ApplicationModel.Activation;
+using Windows.ApplicationModel.DataTransfer.ShareTarget;
 
 namespace MediaImport.Views
 {
@@ -29,6 +32,9 @@ namespace MediaImport.Views
         bool IsUserInjectDrive = false;
         PortableDriveViewModel ConnectedDrives;
 
+        DataTransferManager dataTransferManager = DataTransferManager.GetForCurrentView();
+
+
         public RootPage()
         {
             this.InitializeComponent();
@@ -39,10 +45,15 @@ namespace MediaImport.Views
             UsbWatcher.Removed += Extraction;
             ShowControllers();
             UsbWatcher.Start();
+            dataTransferManager.DataRequested += new TypedEventHandler<DataTransferManager, DataRequestedEventArgs>(this.DataRequested);
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            if(e.Parameter is IReadOnlyList<StorageFile>)
+            {
+                FolderFiles.ItemsSource = e.Parameter as IReadOnlyList<StorageFile>;
+            }
             App.AppTile.ChangeTileContent("Import", "Can share your files to 3 different clouds");
             base.OnNavigatedTo(e);
         }
@@ -116,11 +127,13 @@ namespace MediaImport.Views
         private async Task<BitmapImage> GetIconOfFile(string localPath)
         {
             string fileType = Path.GetExtension(localPath);
+            BitmapImage img = null;
             switch (fileType)
             {
                 case ".mp3":
                 case ".mpeg":
-                    return note;
+                    img =  note;
+                    break;
                 case ".jpg":
                 case ".JPG":
                 case ".png":
@@ -132,15 +145,16 @@ namespace MediaImport.Views
                         BitmapImage photo = new BitmapImage();
                         photo.DecodePixelWidth = 100;
                         await photo.SetSourceAsync(stream);
-                                return photo;
+                                img =  photo;
                         }
+                    break;
                 case ".webm":
                 case ".mp4":
                 case ".3gp":
-                    return video;
-                default:
-                    return null;
+                    img =  video;
+                    break;
             }
+            return img;
         }
         
         private async void Extraction(DeviceWatcher sender, DeviceInformationUpdate e)
@@ -274,6 +288,7 @@ namespace MediaImport.Views
             }
             else
             {
+                
                 App.InformMessage = new MessageDialog("Select at least 1 file to upload");
                 await App.InformMessage.ShowAsync();
             }
@@ -283,18 +298,28 @@ namespace MediaImport.Views
         {
             if (CanImport())
             {
-                DataTransferManager dataTransferManager = DataTransferManager.GetForCurrentView();
-                dataTransferManager.DataRequested += DataTransferManager_DataRequested;
-                
+                DataTransferManager.ShowShareUI();
             }
         }
 
-        private void DataTransferManager_DataRequested(DataTransferManager sender, DataRequestedEventArgs args)
+        public void ReceiveDataFromAnotherApp(IReadOnlyList<StorageFile> files)
+        {
+            FolderFiles.ItemsSource = files;
+        }
+
+        private void DataRequested(DataTransferManager sender, DataRequestedEventArgs args)
         {
             DataRequest request = args.Request;
-            var files = FolderFiles.SelectedItems as StorageFile[];
-            request.Data.SetStorageItems(files);
-            DataTransferManager.ShowShareUI();
+            request.Data.Properties.Title = "Share Example";
+            request.Data.Properties.Description = "A demonstration on how to share";
+            var files = GetStorageFilesType(FolderFiles.SelectedItems);
+            request.Data.SetStorageItems(files);  
         }
+
+        private IEnumerable<StorageFile> GetStorageFilesType(IEnumerable<object> files)
+        {
+            return from f in files select (f as StorageFile);
+        }
+            
     }
 }

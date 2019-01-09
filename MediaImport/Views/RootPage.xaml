@@ -135,6 +135,6 @@
             </SplitView.Content>
         </SplitView>
         <TextBlock Name="EmptyNovel" HorizontalAlignment="Center"  Grid.Row="1" Text=" Welcome! Choose drive!" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Column="1"/>
-        <Button  Name="Share" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="100" Height="30" Content="Share" Click="Share_Click"></Button>
+        <Button  Name="Share" Margin="10" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="80" Height="30" Content="Share" Click="Share_Click"></Button>
     </Grid>
 </Page>
