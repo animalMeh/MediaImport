@@ -15,6 +15,10 @@ namespace MediaImport
 {
     sealed partial class App : Application
     {
+
+        public delegate void DataActivation(object sender , ShareTargetActivatedEventArgs args);
+        public static event DataActivation RecieveData;   
+
         public static MessageDialog InformMessage;
         public static MediaImport.Models.Notifications.TileNotification AppTile
             = new Models.Notifications.TileNotification();
@@ -26,14 +30,9 @@ namespace MediaImport
             AppCenter.Start("feedb1b8-2df9-4c08-81f5-ac754ddf6fa9", typeof(Analytics));
         }
 
-        protected override async void OnShareTargetActivated(ShareTargetActivatedEventArgs args)
+        protected override void OnShareTargetActivated(ShareTargetActivatedEventArgs args)
         {
-            ShareOperation shareOperation = args.ShareOperation;
-            if (shareOperation.Data.Contains(StandardDataFormats.StorageItems))
-            {
-                var files = await shareOperation.Data.GetStorageItemsAsync();
-                //(Window.Current.Content as Frame).Navigate(typeof(Views.RootPage), files);
-            }
+            RecieveData?.Invoke(this, args);
         }
 
         protected override void OnLaunched(LaunchActivatedEventArgs e)

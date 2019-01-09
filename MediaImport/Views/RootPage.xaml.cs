@@ -38,6 +38,8 @@ namespace MediaImport.Views
         public RootPage()
         {
             this.InitializeComponent();
+            App.RecieveData += ReceiveData;
+
             ConnectedDrives = new PortableDriveViewModel();
             DataContext = ConnectedDrives;
             BackButton.Visibility = Visibility.Collapsed;
@@ -82,13 +84,14 @@ namespace MediaImport.Views
             IsUserUsesDrives = true;
             ShowControllers();
         }
-
+        //needs to check
         private void IconsListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (!IsUserInjectDrive)
+            if (!IsUserInjectDrive && ConnectedDrives.PortableDrives.Count != 0)
             {
                 IsUserUsesDrives = true;
                 ShowControllers();
+                
                 DriveFolders.ItemsSource = (IconsListView.SelectedItem as PortableDrive).Folders;
                 FolderFiles.ItemsSource = (IconsListView.SelectedItem as PortableDrive).Files;
             }
@@ -302,21 +305,30 @@ namespace MediaImport.Views
             }
         }
 
-        public void ReceiveDataFromAnotherApp(IReadOnlyList<StorageFile> files)
-        {
-            FolderFiles.ItemsSource = files;
-        }
-
         private void DataRequested(DataTransferManager sender, DataRequestedEventArgs args)
         {
             DataRequest request = args.Request;
             request.Data.Properties.Title = "Share Example";
             request.Data.Properties.Description = "A demonstration on how to share";
-            var files = GetStorageFilesType(FolderFiles.SelectedItems);
+            var files = GetStorageFiles(FolderFiles.SelectedItems);
             request.Data.SetStorageItems(files);  
         }
 
-        private IEnumerable<StorageFile> GetStorageFilesType(IEnumerable<object> files)
+        public async void ReceiveData(object sender, ShareTargetActivatedEventArgs args)
+        {
+            await this.Dispatcher.TryRunAsync(CoreDispatcherPriority.High, async () =>
+            {
+                ShareOperation shareOperation = args.ShareOperation;
+                if (shareOperation.Data.Contains(StandardDataFormats.StorageItems))
+                {
+                    var files = await shareOperation.Data.GetStorageItemsAsync();
+                    Frame.Navigate(typeof(RecievedData), files);
+                }
+            });
+        }
+
+
+        private IEnumerable<StorageFile> GetStorageFiles(IEnumerable<object> files)
         {
             return from f in files select (f as StorageFile);
         }
