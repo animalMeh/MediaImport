@@ -19,6 +19,7 @@ using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.UI.Popups;
 using Windows.UI.Core;
+using MediaImport.Models;
 
 namespace MediaImport.Views
 {
@@ -82,8 +83,8 @@ namespace MediaImport.Views
                 }
                 catch (ServiceException ex)
                 {
-                    App.InformMessage = new MessageDialog(ex.Message);
-                    await App.InformMessage.ShowAsync();
+                    NotificateMessageDialog.InformMessage = new MessageDialog(ex.Message);
+                    await NotificateMessageDialog.InformMessage.ShowAsync();
                 }        
             }
         }
@@ -115,8 +116,8 @@ namespace MediaImport.Views
                 }
                 catch (ServiceException ex)
                 {
-                    App.InformMessage = new MessageDialog(ex.Message);
-                    await App.InformMessage.ShowAsync();
+                    NotificateMessageDialog.InformMessage = new MessageDialog(ex.Message);
+                    await NotificateMessageDialog.InformMessage.ShowAsync();
                 }
                 
             }
@@ -142,8 +143,8 @@ namespace MediaImport.Views
                 }
                 catch (ServiceException ex)
                 {
-                    App.InformMessage = new MessageDialog(ex.Message);
-                    await App.InformMessage.ShowAsync();
+                    NotificateMessageDialog.InformMessage = new MessageDialog(ex.Message);
+                    await NotificateMessageDialog.InformMessage.ShowAsync();
                 }
             }
         }
@@ -160,13 +161,13 @@ namespace MediaImport.Views
             }
             catch (ServiceException graphEx)
             {
-                App.InformMessage = new MessageDialog(graphEx.Message);
-                await App.InformMessage.ShowAsync();
+                NotificateMessageDialog.InformMessage = new MessageDialog(graphEx.Message);
+                await NotificateMessageDialog.InformMessage.ShowAsync();
             }
             catch (Exception ex)
             {
-                App.InformMessage = new MessageDialog(ex.Message);
-                await App.InformMessage.ShowAsync();
+                NotificateMessageDialog.InformMessage = new MessageDialog(ex.Message);
+                await NotificateMessageDialog.InformMessage.ShowAsync();
             }
         }
 
@@ -181,8 +182,8 @@ namespace MediaImport.Views
                 }
                 catch (ServiceException ex)
                 {
-                    App.InformMessage = new MessageDialog(ex.Message);
-                    await App.InformMessage.ShowAsync();
+                    NotificateMessageDialog.InformMessage = new MessageDialog(ex.Message);
+                    await NotificateMessageDialog.InformMessage.ShowAsync();
                 }
               
             })));

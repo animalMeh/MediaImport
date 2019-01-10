@@ -6,6 +6,7 @@ using Windows.UI.Xaml.Navigation;
 using MediaImport.Models.Google;
 using System.Threading.Tasks;
 using Windows.UI.Popups;
+using MediaImport.Models;
 
 namespace MediaImport.Views
 {
@@ -63,8 +64,8 @@ namespace MediaImport.Views
             }
             catch(Exception ex)
             {
-                App.InformMessage = new MessageDialog(ex.Message);
-                await  App.InformMessage.ShowAsync();
+                NotificateMessageDialog.InformMessage = new MessageDialog(ex.Message);
+                await  NotificateMessageDialog.InformMessage.ShowAsync();
                
             }
         }

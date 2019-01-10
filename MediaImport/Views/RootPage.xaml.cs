@@ -223,14 +223,14 @@ namespace MediaImport.Views
                 }
                 catch(Exception ex)
                 {
-                    App.InformMessage = new MessageDialog(ex.Message);
-                    await App.InformMessage.ShowAsync();
+                    NotificateMessageDialog.InformMessage = new MessageDialog(ex.Message);
+                    await NotificateMessageDialog.InformMessage.ShowAsync();
                 }
             }
             else
             {
-                App.InformMessage = new MessageDialog("Select at least 1 file to upload");
-                await App.InformMessage.ShowAsync();
+                MessageDialog InformMessage = new MessageDialog("Select at least 1 file to upload");
+                await InformMessage.ShowAsync();
             }
         }
 
@@ -249,14 +249,14 @@ namespace MediaImport.Views
                 }
                 catch (Exception ex)
                 {
-                    App.InformMessage = new MessageDialog(ex.Message);
-                    await App.InformMessage.ShowAsync();
+                    NotificateMessageDialog.InformMessage = new MessageDialog(ex.Message);
+                    await NotificateMessageDialog.InformMessage.ShowAsync();
                 }
             }
             else
             {
-                App.InformMessage = new MessageDialog("Select at least 1 file to upload");
-                await App.InformMessage.ShowAsync();
+                NotificateMessageDialog.InformMessage = new MessageDialog("Select at least 1 file to upload");
+                await NotificateMessageDialog.InformMessage.ShowAsync();
             }
         }
 
@@ -269,8 +269,8 @@ namespace MediaImport.Views
                 var files = FolderFiles.SelectedItems.ToArray();
                 if (files.Where(f => ((StorageFile)f).ContentType.Contains("audio")).Count() == files.Length)
                 {
-                    App.InformMessage = new MessageDialog("Google Photo does not upload audio files");
-                    await App.InformMessage.ShowAsync();
+                    NotificateMessageDialog.InformMessage = new MessageDialog("Google Photo does not upload audio files");
+                    await NotificateMessageDialog.InformMessage.ShowAsync();
                 }
                 else
                 {
@@ -283,16 +283,16 @@ namespace MediaImport.Views
                     }
                     catch (Exception ex)
                     {
-                        App.InformMessage = new MessageDialog(ex.Message);
-                        await App.InformMessage.ShowAsync();
+                        NotificateMessageDialog.InformMessage = new MessageDialog(ex.Message);
+                        await NotificateMessageDialog.InformMessage.ShowAsync();
                     }
                 }
             }
             else
             {
-                
-                App.InformMessage = new MessageDialog("Select at least 1 file to upload");
-                await App.InformMessage.ShowAsync();
+
+                NotificateMessageDialog.InformMessage = new MessageDialog("Select at least 1 file to upload");
+                await NotificateMessageDialog.InformMessage.ShowAsync();
             }
         }
 

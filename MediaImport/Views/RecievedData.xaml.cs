@@ -1,4 +1,5 @@
-﻿using Microsoft.Toolkit.Services.OneDrive;
+﻿using MediaImport.Models;
+using Microsoft.Toolkit.Services.OneDrive;
 using Microsoft.Toolkit.Services.Services.MicrosoftGraph;
 using System;
 using System.Collections.Generic;
@@ -21,20 +22,14 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
-
 namespace MediaImport.Views
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
     public sealed partial class RecievedData : Page
     {
         StorageFile[] FilesToImport;
         public RecievedData()
         {
             this.InitializeComponent();
-          //  App.RecieveData += ReceiveData;
         }
 
         protected override  async void OnNavigatedTo(NavigationEventArgs e)
@@ -72,8 +67,8 @@ namespace MediaImport.Views
                 }
                 catch (Exception ex)
                 {
-                    App.InformMessage = new MessageDialog(ex.Message);
-                    await App.InformMessage.ShowAsync();
+                    NotificateMessageDialog.InformMessage = new MessageDialog(ex.Message);
+                    await NotificateMessageDialog.InformMessage.ShowAsync();
                 }
           
         }
@@ -91,8 +86,8 @@ namespace MediaImport.Views
                 }
                 catch (Exception ex)
                 {
-                    App.InformMessage = new MessageDialog(ex.Message);
-                    await App.InformMessage.ShowAsync();
+                    NotificateMessageDialog.InformMessage = new MessageDialog(ex.Message);
+                    await NotificateMessageDialog.InformMessage.ShowAsync();
                 }
            
         }
@@ -104,8 +99,8 @@ namespace MediaImport.Views
 
             if (FilesToImport.Where(f => ((StorageFile)f).ContentType.Contains("audio")).Count() == FilesToImport.Length)
             {
-                App.InformMessage = new MessageDialog("Google Photo does not upload audio files");
-                await App.InformMessage.ShowAsync();
+                NotificateMessageDialog.InformMessage = new MessageDialog("Google Photo does not upload audio files");
+                await NotificateMessageDialog.InformMessage.ShowAsync();
             }
             else
             {
@@ -118,8 +113,8 @@ namespace MediaImport.Views
                 }
                 catch (Exception ex)
                 {
-                    App.InformMessage = new MessageDialog(ex.Message);
-                    await App.InformMessage.ShowAsync();
+                    NotificateMessageDialog.InformMessage = new MessageDialog(ex.Message);
+                    await NotificateMessageDialog.InformMessage.ShowAsync();
                 }
 
             }

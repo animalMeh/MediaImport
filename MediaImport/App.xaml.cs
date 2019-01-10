@@ -17,7 +17,7 @@ namespace MediaImport
 {
     sealed partial class App : Application
     {
-        public static MessageDialog InformMessage;
+       
         public static MediaImport.Models.Notifications.TileNotification AppTile
             = new Models.Notifications.TileNotification();
       
@@ -87,14 +87,24 @@ namespace MediaImport
             Window.Current.Activate();
         }
 
+       
+
         void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
         {
             throw new Exception("Failed to load Page " + e.SourcePageType.FullName);
         }
 
-        private void OnSuspending(object sender, SuspendingEventArgs e)
+        private async void OnSuspending(object sender, SuspendingEventArgs e)
         {
             var deferral = e.SuspendingOperation.GetDeferral();
+
+            StorageFolder localFolder = ApplicationData.Current.LocalFolder;
+            var files = await localFolder.GetFilesAsync();
+            foreach(var f in files)
+            {
+                await f.DeleteAsync();
+            }
+
             //TODO: Save application state and stop any background activity
             deferral.Complete();
         }

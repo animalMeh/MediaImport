@@ -1,4 +1,5 @@
-﻿using MediaImport.Models.Google;
+﻿using MediaImport.Models;
+using MediaImport.Models.Google;
 using System;
 using System.Threading.Tasks;
 using Windows.Storage;
@@ -90,8 +91,8 @@ namespace MediaImport.Views
                 }
                 catch (Exception ex)
                 {
-                    App.InformMessage = new MessageDialog(ex.Message);
-                    await App.InformMessage.ShowAsync();
+                    NotificateMessageDialog.InformMessage = new MessageDialog(ex.Message);
+                    await NotificateMessageDialog.InformMessage.ShowAsync();
                 }
             }
         }
@@ -113,8 +114,8 @@ namespace MediaImport.Views
                 }
                 catch (Exception ex)
                 {
-                App.InformMessage = new MessageDialog(ex.Message);
-                await App.InformMessage.ShowAsync();
+                NotificateMessageDialog.InformMessage = new MessageDialog(ex.Message);
+                await NotificateMessageDialog.InformMessage.ShowAsync();
                 }
         }
 
@@ -145,8 +146,8 @@ namespace MediaImport.Views
                 }
                 catch (Exception ex)
                 {
-                    App.InformMessage = new MessageDialog(ex.Message);
-                    await App.InformMessage.ShowAsync();
+                    NotificateMessageDialog.InformMessage = new MessageDialog(ex.Message);
+                    await NotificateMessageDialog.InformMessage.ShowAsync();
                 }
             }
         }
@@ -164,8 +165,8 @@ namespace MediaImport.Views
            
             catch (Exception ex)
             {
-                App.InformMessage = new MessageDialog(ex.Message);
-                await App.InformMessage.ShowAsync();
+                NotificateMessageDialog.InformMessage = new MessageDialog(ex.Message);
+                await NotificateMessageDialog.InformMessage.ShowAsync();
             }
         }
 
@@ -180,8 +181,8 @@ namespace MediaImport.Views
                 }
                 catch (Exception ex)
                 {
-                    App.InformMessage = new MessageDialog(ex.Message);
-                    await App.InformMessage.ShowAsync();
+                    NotificateMessageDialog.InformMessage = new MessageDialog(ex.Message);
+                    await NotificateMessageDialog.InformMessage.ShowAsync();
                 }
 
             })));

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Windows.UI.Popups;
 using Windows.UI.Xaml.Controls;
 
 namespace MediaImport.Models
@@ -28,5 +29,10 @@ namespace MediaImport.Models
                 return null;
             }
         }
+    }
+
+    public static class NotificateMessageDialog
+    {
+        public static MessageDialog InformMessage { get; set; }
     }
 }
