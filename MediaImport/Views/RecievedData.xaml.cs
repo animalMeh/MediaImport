@@ -44,7 +44,7 @@ namespace MediaImport.Views
             StorageFolder localFolder = ApplicationData.Current.LocalFolder;
             foreach (var f in files)
             {
-                StorageFile newFile = await (f as StorageFile).CopyAsync(localFolder);
+                StorageFile newFile = await (f as StorageFile).CopyAsync(localFolder ,f.Name , NameCollisionOption.ReplaceExisting);
                 ImportedFiles.Add(newFile);
             }
             FilesToImport = ImportedFiles.ToArray();

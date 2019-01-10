@@ -38,8 +38,7 @@ namespace MediaImport.Views
         public RootPage()
         {
             this.InitializeComponent();
-            App.RecieveData += ReceiveData;
-
+     
             ConnectedDrives = new PortableDriveViewModel();
             DataContext = ConnectedDrives;
             BackButton.Visibility = Visibility.Collapsed;
@@ -313,21 +312,7 @@ namespace MediaImport.Views
             var files = GetStorageFiles(FolderFiles.SelectedItems);
             request.Data.SetStorageItems(files);  
         }
-
-        public async void ReceiveData(object sender, ShareTargetActivatedEventArgs args)
-        {
-            await this.Dispatcher.TryRunAsync(CoreDispatcherPriority.High, async () =>
-            {
-                ShareOperation shareOperation = args.ShareOperation;
-                if (shareOperation.Data.Contains(StandardDataFormats.StorageItems))
-                {
-                    var files = await shareOperation.Data.GetStorageItemsAsync();
-                    Frame.Navigate(typeof(RecievedData), files);
-                }
-            });
-        }
-
-
+        
         private IEnumerable<StorageFile> GetStorageFiles(IEnumerable<object> files)
         {
             return from f in files select (f as StorageFile);
