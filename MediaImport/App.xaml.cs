@@ -1,15 +1,11 @@
 ﻿using System;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
-using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
 using Windows.UI.Xaml.Navigation;
-using Windows.UI.Notifications;
-using Windows.ApplicationModel.DataTransfer.ShareTarget;
-using Windows.ApplicationModel.DataTransfer;
 using System.Collections.Generic;
 using Windows.Storage;
 
@@ -100,11 +96,14 @@ namespace MediaImport
 
             StorageFolder localFolder = ApplicationData.Current.LocalFolder;
             var files = await localFolder.GetFilesAsync();
-            foreach(var f in files)
+            try
             {
-                await f.DeleteAsync();
+                foreach (var f in files)
+                {
+                    await f.DeleteAsync();
+                }
             }
-
+            catch (Exception exc) { }
             //TODO: Save application state and stop any background activity
             deferral.Complete();
         }

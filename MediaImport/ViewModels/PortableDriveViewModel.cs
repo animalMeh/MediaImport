@@ -10,7 +10,7 @@ namespace MediaImport.ViewModels
 {
     public class PortableDriveViewModel : INotifyPropertyChanged
     {
-        private PortableDrive selectedDrive;
+        private PortableDrive selectedDrive; // StorageFolder
 
         private ObservableCollection<PortableDrive> portableDrives;
 
@@ -48,13 +48,19 @@ namespace MediaImport.ViewModels
                 {
                     if (PortableDrives.Where(p => p.Name == drive.Name && p.DateCreated == drive.DateCreated).Select(b => b).Count() == 0)
                     {
-                        var currentDrive = new PortableDrive { Name = drive.Name, DateCreated = drive.DateCreated };
+                        var currentDrive = new PortableDrive ((StorageFolder)drive) { Name = drive.Name, DateCreated = drive.DateCreated};
                         PortableDrives.Add(currentDrive);
                         currentDrive.Files = await ((StorageFolder)drive).GetFilesAsync();
                         currentDrive.Folders = await ((StorageFolder)drive).GetFoldersAsync();
                     }
                 }
             }
+           
+        }
+
+        private void GenerateKnownFolders()
+        {
+
         }
 
         public void AddNewOne()
@@ -69,7 +75,7 @@ namespace MediaImport.ViewModels
             var drives = await Windows.Storage.KnownFolders.RemovableDevices.GetItemsAsync();
             foreach (var drive in drives)
             {
-                var currentDrive = new PortableDrive { Name = drive.Name, DateCreated = drive.DateCreated };
+                var currentDrive = new PortableDrive((StorageFolder)drive) { Name = drive.Name, DateCreated = drive.DateCreated };
                 currentDrive.Files = await ((StorageFolder)drive).GetFilesAsync();
                 currentDrive.Folders = await ((StorageFolder)drive).GetFoldersAsync();
                 PortableDrives.Add(currentDrive);  

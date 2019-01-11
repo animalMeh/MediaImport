@@ -171,14 +171,20 @@ namespace MediaImport.Models.Google
         public async Task UploadFileToLibrary(StorageFile file)
         {
             string uploadToken;
-            if (file.ContentType.Contains("video"))
+            //if (file.ContentType.Contains("video"))
                 uploadToken = await GetMediaUploadTokenAsync(file);
-            else uploadToken = await GetResumableUploadTokenAsync(file);
+            //else uploadToken = await GetResumableUploadTokenAsync(file);
 
             var ThirdMessage = new HttpRequestMessage(new HttpMethod("POST"), "https://photoslibrary.googleapis.com/v1/mediaItems:batchCreate");
             string uploadingFile = "{\"newMediaItems\":[{" + "\"description\":\"ITEM_DESCRIPTION\",\"simpleMediaItem\":{" + "\"uploadToken\":\"" + uploadToken + "\"" + "}" + "}]}";
             ThirdMessage.Content = new StringContent(uploadingFile);
-            await GoogleClient.SendAsync(ThirdMessage);
+            var answer = await GoogleClient.SendAsync(ThirdMessage);
+           
+            ///
+            ////
+            ///
+            ////
+
         }
 
         public async Task<string> CreateNewAlbum()

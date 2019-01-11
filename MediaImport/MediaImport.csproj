@@ -133,7 +133,7 @@
     <Compile Include="Models\Google\GooglePhotoService.cs" />
     <Compile Include="Models\Notifications\TileNotification.cs" />
     <Compile Include="Models\OneDriveDataTemplateSelector.cs" />
-    <Compile Include="Models\PortableDrive.cs" />
+    <Compile Include="Models\Drives\PortableDrive.cs" />
     <Compile Include="Models\TextDialogBox.cs" />
     <Compile Include="ViewModels\PortableDriveViewModel.cs" />
     <Compile Include="Views\GoogleDrivePage.xaml.cs">
