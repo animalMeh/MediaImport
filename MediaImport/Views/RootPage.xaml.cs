@@ -17,6 +17,7 @@ using Windows.UI.Popups;
 using Windows.UI.Xaml.Navigation;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
+using MediaImport.Models.Notifications;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.DataTransfer.ShareTarget;
 
@@ -55,7 +56,7 @@ namespace MediaImport.Views
             {
                 FolderFiles.ItemsSource = e.Parameter as IReadOnlyList<StorageFile>;
             }
-            App.AppTile.ChangeTileContent("Import", "Can share your files to 3 different clouds");
+            App.AppTile.ChangeTileContent(TileType.TextTile, "Import", "Can share your files to 3 different clouds");
             base.OnNavigatedTo(e);
         }
 
@@ -209,7 +210,6 @@ namespace MediaImport.Views
    
         private async void ImportOneDrive_Click(object sender, RoutedEventArgs e)
         {
-            App.AppTile.ChangeTileContent("Import!!!", "Importing to OneDrive");
             if (CanImport())
             {
                 try
@@ -232,12 +232,13 @@ namespace MediaImport.Views
                 MessageDialog InformMessage = new MessageDialog("Select at least 1 file to upload");
                 await InformMessage.ShowAsync();
             }
+           App.AppTile.ChangeTileContent(TileType.ImageTile , string.Format("Import {0} file(s)", FolderFiles.SelectedItems.Count), imageSource: "ms-appx:///Assets/MyLogo/onedrive.png");
+
         }
 
         private async void ImportGoogleDrive_Click(object sender, RoutedEventArgs e)
         {
-            App.AppTile.ChangeTileContent("Import!!!", "Importing to Google Drive");
-
+           
             if (CanImport())
             {
                 try
@@ -258,12 +259,13 @@ namespace MediaImport.Views
                 NotificateMessageDialog.InformMessage = new MessageDialog("Select at least 1 file to upload");
                 await NotificateMessageDialog.InformMessage.ShowAsync();
             }
+
+            App.AppTile.ChangeTileContent(TileType.ImageTile, string.Format("Import {0} file(s)", FolderFiles.SelectedItems.Count), imageSource: "ms-appx:///Assets/MyLogo/googledrive.png");
+
         }
 
         private async void ImportGooglePhoto_Click(object sender, RoutedEventArgs e)
         {
-            App.AppTile.ChangeTileContent("Import!!!", "Importing to Google Photo");
-
             if (CanImport())
             {
                 var files = FolderFiles.SelectedItems.ToArray();
@@ -290,10 +292,12 @@ namespace MediaImport.Views
             }
             else
             {
-
                 NotificateMessageDialog.InformMessage = new MessageDialog("Select at least 1 file to upload");
                 await NotificateMessageDialog.InformMessage.ShowAsync();
             }
+
+            App.AppTile.ChangeTileContent(TileType.ImageTile, string.Format("Import {0} file(s)", FolderFiles.SelectedItems.Count), imageSource: "ms-appx:///Assets/MyLogo/googlephoto.png");
+
         }
 
         private void Share_Click(object sender, RoutedEventArgs e)

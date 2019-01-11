@@ -7,20 +7,31 @@ using Windows.Data.Xml.Dom;
 using Windows.UI.Notifications;
 using Microsoft.Toolkit.Uwp.Notifications; // Notifications library
 using Windows.UI.StartScreen;
+using Windows.UI.Xaml.Media.Imaging;
 
 namespace MediaImport.Models.Notifications
 {
+    public enum TileType { ImageTile, TextTile };
+
     public class TileNotification
     {
-       // readonly XmlDocument TileXml;
-
-
         public TileNotification()
         {
-          //  TileXml = tileXml;
         }
 
-        public void ChangeTileContent( string first,string second)
+        public void ChangeTileContent(TileType tileType, string firstTitle, string secondTitle = "", string imageSource = "")
+        {
+            if (tileType == TileType.TextTile && !(string.IsNullOrEmpty(secondTitle) && string.IsNullOrWhiteSpace(secondTitle)))
+            {
+                TextTileContent(firstTitle, secondTitle);
+            }
+            if (tileType == TileType.ImageTile && !(string.IsNullOrEmpty(imageSource) && string.IsNullOrWhiteSpace(imageSource)))
+            {
+                ImageTileContent(firstTitle, imageSource);
+            }
+        }
+
+        public void ImageTileContent(string first, string source)
         {
             TileContent content = new TileContent()
             {
@@ -30,8 +41,75 @@ namespace MediaImport.Models.Notifications
                     {
                         Content = new TileBindingContentAdaptive()
                         {
-                             Children =
-                                    {
+                            Children =
+                            {
+                                new AdaptiveText()
+                                {
+                                Text = first
+                                        },
+
+                                        new AdaptiveImage()
+                                        {
+                                            Source = source
+                                        }
+                            }
+                        }
+                    },
+                    TileWide = new TileBinding()
+                    {
+                        Content = new TileBindingContentAdaptive()
+                        {
+                            Children =
+                            {
+                                new AdaptiveText()
+                                {
+                                    Text = first,
+                                    HintStyle = AdaptiveTextStyle.Subtitle
+                                },
+                                new AdaptiveImage()
+                                {
+                                     Source = source
+                                }
+                            }
+                        }
+                    },
+                    TileLarge = new TileBinding()
+                    {
+                        Content = new TileBindingContentAdaptive()
+                        {
+                            Children =
+                            {
+                                new AdaptiveText()
+                                {
+                                    Text = first,
+                                    HintStyle = AdaptiveTextStyle.Subtitle
+                                },
+                                new AdaptiveImage()
+                                {
+                                     Source = source
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+            ShowTile(content);
+
+        }
+
+
+        public void TextTileContent(string first, string second)
+        {
+            TileContent content = new TileContent()
+            {
+                Visual = new TileVisual()
+                {
+                    TileMedium = new TileBinding()
+                    {
+                        Content = new TileBindingContentAdaptive()
+                        {
+                            Children =
+                                {
                                         new AdaptiveText()
                                         {
                                             Text = first
@@ -41,8 +119,8 @@ namespace MediaImport.Models.Notifications
                                         {
                                             Text = second,
                                             HintStyle = AdaptiveTextStyle.CaptionSubtle
-                                        },
-                                    }
+                                        }
+                                }
                         }
                     },
 
@@ -51,34 +129,36 @@ namespace MediaImport.Models.Notifications
                         Content = new TileBindingContentAdaptive()
                         {
                             Children =
-                {
-                    new AdaptiveText()
-                    {
-                        Text = first,
-                        HintStyle = AdaptiveTextStyle.Subtitle
-                    },
-
-                    new AdaptiveText()
-                    {
-                        Text = second,
-                        HintStyle = AdaptiveTextStyle.CaptionSubtle
-                    },
-                    
-                }
+                            {
+                                new AdaptiveText()
+                                {
+                                    Text = first,
+                                    HintStyle = AdaptiveTextStyle.Subtitle
+                                },
+                                new AdaptiveText()
+                                {
+                                    Text = second,
+                                    HintStyle = AdaptiveTextStyle.CaptionSubtle
+                                }
+                            }
                         }
                     }
                 }
             };
-            var notification = new Windows.UI.Notifications.TileNotification(content.GetXml());
+
+            ShowTile(content);
+        }
+
+        public void ShowTile(TileContent tileContent)
+        {
+            var notification = new Windows.UI.Notifications.TileNotification(tileContent.GetXml());
             notification.ExpirationTime = DateTimeOffset.UtcNow.AddMinutes(2);
             TileUpdateManager.CreateTileUpdaterForApplication().Update(notification);
 
             if (SecondaryTile.Exists("MySecondaryTile"))
             {
-                // Get its updater
                 var updater = TileUpdateManager.CreateTileUpdaterForSecondaryTile("MySecondaryTile");
 
-                // And send the notification
                 updater.Update(notification);
             }
         }

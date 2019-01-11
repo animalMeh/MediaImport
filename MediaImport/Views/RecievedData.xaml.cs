@@ -1,25 +1,15 @@
 ﻿using MediaImport.Models;
+using MediaImport.Models.Notifications;
 using Microsoft.Toolkit.Services.OneDrive;
 using Microsoft.Toolkit.Services.Services.MicrosoftGraph;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.ApplicationModel.Activation;
-using Windows.ApplicationModel.DataTransfer;
-using Windows.ApplicationModel.DataTransfer.ShareTarget;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.Storage;
-using Windows.UI.Core;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 namespace MediaImport.Views
@@ -27,6 +17,7 @@ namespace MediaImport.Views
     public sealed partial class RecievedData : Page
     {
         StorageFile[] FilesToImport;
+
         public RecievedData()
         {
             this.InitializeComponent();
@@ -54,8 +45,6 @@ namespace MediaImport.Views
 
         private async void ImportOneDrive_Click(object sender, RoutedEventArgs e)
         {
-            App.AppTile.ChangeTileContent("Import!!!", "Importing to OneDrive");
-           
                 try
                 {
                     var scopes = new string[] { MicrosoftGraphScope.FilesReadWriteAll };
@@ -70,33 +59,33 @@ namespace MediaImport.Views
                     NotificateMessageDialog.InformMessage = new MessageDialog(ex.Message);
                     await NotificateMessageDialog.InformMessage.ShowAsync();
                 }
-          
+            App.AppTile.ChangeTileContent(TileType.ImageTile, string.Format("Import {0} file(s)", FilesToImport.Length), imageSource: "ms-appx:///Assets/MyLogo/onedrive.png");
+
         }
 
         private async void ImportGoogleDrive_Click(object sender, RoutedEventArgs e)
         {
-            App.AppTile.ChangeTileContent("Import!!!", "Importing to Google Drive");
 
-                try
+            try
                 {
                     if (Models.Google.GoogleDriveService.IsAuthorized)
                         Frame.Navigate(typeof(GoogleDrivePage), FilesToImport);
                     else if (await Models.Google.GoogleDriveService.InitializeInstanceAndLogIn("700806614287-aqq3uguhlld0o7dr0sgs8nd2saci4k7j.apps.googleusercontent.com"))
                         Frame.Navigate(typeof(GoogleDrivePage), FilesToImport);
                 }
-                catch (Exception ex)
+            catch (Exception ex)
                 {
                     NotificateMessageDialog.InformMessage = new MessageDialog(ex.Message);
                     await NotificateMessageDialog.InformMessage.ShowAsync();
                 }
-           
+
+            App.AppTile.ChangeTileContent(TileType.ImageTile, string.Format("Import {0} file(s)", FilesToImport.Length), imageSource: "ms-appx:///Assets/MyLogo/googledrive.png");
+
         }
 
         private async void ImportGooglePhoto_Click(object sender, RoutedEventArgs e)
         {
-            App.AppTile.ChangeTileContent("Import!!!", "Importing to Google Photo");
-
-
+         
             if (FilesToImport.Where(f => ((StorageFile)f).ContentType.Contains("audio")).Count() == FilesToImport.Length)
             {
                 NotificateMessageDialog.InformMessage = new MessageDialog("Google Photo does not upload audio files");
@@ -116,7 +105,7 @@ namespace MediaImport.Views
                     NotificateMessageDialog.InformMessage = new MessageDialog(ex.Message);
                     await NotificateMessageDialog.InformMessage.ShowAsync();
                 }
-
+                App.AppTile.ChangeTileContent(TileType.ImageTile, string.Format("Import {0} file(s)", FilesToImport.Length), imageSource: "ms-appx:///Assets/MyLogo/googlephoto.png");
             }
         }
 
