@@ -126,6 +126,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\Drives\DriveTemplateSelector.cs" />
     <Compile Include="Models\GoogleDriveDataTemplateSelector.cs" />
     <Compile Include="Models\Google\GoogleDriveService.cs" />
     <Compile Include="Models\Google\GoogleDriveStorageFolder.cs" />
@@ -133,9 +134,9 @@
     <Compile Include="Models\Google\GooglePhotoService.cs" />
     <Compile Include="Models\Notifications\TileNotification.cs" />
     <Compile Include="Models\OneDriveDataTemplateSelector.cs" />
-    <Compile Include="Models\Drives\PortableDrive.cs" />
+    <Compile Include="Models\Drives\Drive.cs" />
     <Compile Include="Models\TextDialogBox.cs" />
-    <Compile Include="ViewModels\PortableDriveViewModel.cs" />
+    <Compile Include="ViewModels\DriveViewModel.cs" />
     <Compile Include="Views\GoogleDrivePage.xaml.cs">
       <DependentUpon>GoogleDrivePage.xaml</DependentUpon>
     </Compile>

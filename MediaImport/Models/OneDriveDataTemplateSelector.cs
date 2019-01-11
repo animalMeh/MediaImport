@@ -10,13 +10,6 @@ namespace MediaImport.Models
 
         protected override DataTemplate SelectTemplateCore(object item, DependencyObject container)
         {
-            //if (item is OneDriveStorageItem oneDriveItem)
-            //{            
-            //    if (oneDriveItem.IsFolder())
-            //    {
-            //        return FolderTemplate;
-            //    }
-            //}
             return FolderTemplate;
         }
     }

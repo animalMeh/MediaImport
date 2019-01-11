@@ -31,7 +31,7 @@ namespace MediaImport.Views
         DeviceWatcher UsbWatcher = DeviceInformation.CreateWatcher(DeviceClass.PortableStorageDevice);
         bool IsUserUsesDrives = false;
         bool IsUserInjectDrive = false;
-        PortableDriveViewModel ConnectedDrives;
+        DriveViewModel ConnectedDrives;
 
         DataTransferManager dataTransferManager = DataTransferManager.GetForCurrentView();
 
@@ -40,8 +40,10 @@ namespace MediaImport.Views
         {
             this.InitializeComponent();
      
-            ConnectedDrives = new PortableDriveViewModel();
+            ConnectedDrives = new DriveViewModel();
             DataContext = ConnectedDrives;
+           // IconsListView.ItemsSource = ConnectedDrives;
+
             BackButton.Visibility = Visibility.Collapsed;
             UsbWatcher.Added += Insertion;
             UsbWatcher.Removed += Extraction;
@@ -69,8 +71,8 @@ namespace MediaImport.Views
         {
             GC.WaitForPendingFinalizers();
             GC.Collect(0);
-            DriveFolders.ItemsSource = (IconsListView.SelectedItem as PortableDrive).Folders;
-            FolderFiles.ItemsSource = (IconsListView.SelectedItem as PortableDrive).Files;
+            DriveFolders.ItemsSource = (IconsListView.SelectedItem as Drive).Folders;
+            FolderFiles.ItemsSource = (IconsListView.SelectedItem as Drive).Files;
         }
 
         private void HomeButton_Click(object sender, RoutedEventArgs e)
@@ -92,8 +94,8 @@ namespace MediaImport.Views
                 IsUserUsesDrives = true;
                 ShowControllers();
                 
-                DriveFolders.ItemsSource = (IconsListView.SelectedItem as PortableDrive).Folders;
-                FolderFiles.ItemsSource = (IconsListView.SelectedItem as PortableDrive).Files;
+                DriveFolders.ItemsSource = (IconsListView.SelectedItem as Drive).Folders;
+                FolderFiles.ItemsSource = (IconsListView.SelectedItem as Drive).Files;
             }
             else IsUserInjectDrive = false;
         }
@@ -203,11 +205,7 @@ namespace MediaImport.Views
             return FolderFiles.SelectedItems.Count > 0;
         }
 
-        public void FilesUploading(bool u)
-        {
-            OnProgressPanel.Visibility = u ? Visibility.Visible : Visibility.Collapsed;
-        }
-   
+      
         private async void ImportOneDrive_Click(object sender, RoutedEventArgs e)
         {
             if (CanImport())

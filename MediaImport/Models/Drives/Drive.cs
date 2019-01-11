@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Windows.Storage;
-
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 
 namespace MediaImport.Models
 {
-    public class PortableDrive : INotifyPropertyChanged
+    public class Drive : INotifyPropertyChanged
     {
         private string name;
 
-        public PortableDrive(StorageFolder actualFolderOfDrive)
+        public Drive(StorageFolder actualFolderOfDrive)
         {
             ActualFolderOfDrive = actualFolderOfDrive;
         }
@@ -70,7 +71,8 @@ namespace MediaImport.Models
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
         }
 
-        public static explicit operator StorageFolder(PortableDrive pd)
+
+        public static explicit operator StorageFolder(Drive pd)
         {
             return pd.ActualFolderOfDrive;
         }

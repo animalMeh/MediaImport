@@ -8,13 +8,13 @@ using Windows.Storage;
 
 namespace MediaImport.ViewModels
 {
-    public class PortableDriveViewModel : INotifyPropertyChanged
+    public class DriveViewModel : INotifyPropertyChanged
     {
-        private PortableDrive selectedDrive; // StorageFolder
+        private Drive selectedDrive; // StorageFolder
 
-        private ObservableCollection<PortableDrive> portableDrives;
+        private ObservableCollection<Drive> portableDrives;
 
-        public PortableDrive SelectedDrive
+        public Drive SelectedDrive
         {
             get { return selectedDrive; }
             set
@@ -24,7 +24,7 @@ namespace MediaImport.ViewModels
             }
         }
 
-        public ObservableCollection<PortableDrive> PortableDrives
+        public ObservableCollection<Drive> PortableDrives
         {
             get => portableDrives;
             private set
@@ -34,9 +34,10 @@ namespace MediaImport.ViewModels
             }
         }
 
-        public PortableDriveViewModel()
+        public DriveViewModel()
         {
-            PortableDrives = new ObservableCollection<PortableDrive>();
+            PortableDrives = new ObservableCollection<Drive>();
+            GenerateKnownFolders();
         }
 
         private async void GenerateDrives()
@@ -48,18 +49,42 @@ namespace MediaImport.ViewModels
                 {
                     if (PortableDrives.Where(p => p.Name == drive.Name && p.DateCreated == drive.DateCreated).Select(b => b).Count() == 0)
                     {
-                        var currentDrive = new PortableDrive ((StorageFolder)drive) { Name = drive.Name, DateCreated = drive.DateCreated};
+                        var currentDrive = new Drive ((StorageFolder)drive) { Name = drive.Name, DateCreated = drive.DateCreated};
                         PortableDrives.Add(currentDrive);
                         currentDrive.Files = await ((StorageFolder)drive).GetFilesAsync();
                         currentDrive.Folders = await ((StorageFolder)drive).GetFoldersAsync();
+                       
                     }
                 }
             }
-           
+            
         }
 
-        private void GenerateKnownFolders()
+        private async void GenerateKnownFolders()
         {
+            PortableDrives.Add(new Drive(KnownFolders.PicturesLibrary)
+            {
+                Name = KnownFolders.PicturesLibrary.Name,
+                DateCreated = KnownFolders.PicturesLibrary.DateCreated,
+                Files = await KnownFolders.PicturesLibrary.GetFilesAsync(),
+                Folders = await KnownFolders.PicturesLibrary.GetFoldersAsync()
+            });
+
+            PortableDrives.Add(new Drive(KnownFolders.MusicLibrary)
+            {
+                Name = KnownFolders.MusicLibrary.Name,
+                DateCreated = KnownFolders.MusicLibrary.DateCreated,
+                Files = await KnownFolders.MusicLibrary.GetFilesAsync(),
+                Folders = await KnownFolders.MusicLibrary.GetFoldersAsync()
+            });
+
+            PortableDrives.Add(new Drive(KnownFolders.VideosLibrary)
+            {
+                Name = KnownFolders.VideosLibrary.Name,
+                DateCreated = KnownFolders.VideosLibrary.DateCreated,
+                Files = await KnownFolders.VideosLibrary.GetFilesAsync(),
+                Folders = await KnownFolders.VideosLibrary.GetFoldersAsync()
+            });
 
         }
 
@@ -75,7 +100,7 @@ namespace MediaImport.ViewModels
             var drives = await Windows.Storage.KnownFolders.RemovableDevices.GetItemsAsync();
             foreach (var drive in drives)
             {
-                var currentDrive = new PortableDrive((StorageFolder)drive) { Name = drive.Name, DateCreated = drive.DateCreated };
+                var currentDrive = new Drive((StorageFolder)drive) { Name = drive.Name, DateCreated = drive.DateCreated };
                 currentDrive.Files = await ((StorageFolder)drive).GetFilesAsync();
                 currentDrive.Folders = await ((StorageFolder)drive).GetFoldersAsync();
                 PortableDrives.Add(currentDrive);  
